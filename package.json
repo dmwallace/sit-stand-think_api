@@ -1,0 +1,27 @@
+{
+  "name": "sit-stand-think_cms",
+  "version": "1.0.0",
+  "description": "CMS for Sit Stand Think app",
+  "main": "src/index.js",
+  "author": "davewallace@gmail.com",
+  "license": "none",
+  "private": true,
+  "dependencies": {
+    "sequelize": "^4.37.7",
+    "sqlite3": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-runtime": "^6.26.0",
+    "babel-watch": "^2.0.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:server": "node -v && rm -rf ./build && webpack --config config/webpack.config.server.js",
+    "dev": "./node_modules/.bin/babel-watch src/index.js"
+  }
+}
