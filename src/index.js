@@ -1,1 +1,2 @@
-import db from './db';
+//import graphqlCrudGenerator from './graphqlCrudGeneratorServer';
+import graphqlServer from './graphqlServer';

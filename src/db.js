@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 
-let dbLocation = `${__dirname}/../../db/sit_stand_think.sqlite`;
+let dbLocation = `./db/sit_stand_think.sqlite`;
 console.log("dbLocation", dbLocation);
 
 export const dbName = 'main';
@@ -23,23 +23,11 @@ export const sequilizeConfig = {
 };
 
 
-const sequelize = new Sequelize(dbName, dbUsername, dbPassword, sequilizeConfig);
-
-sequelize.authenticate()
-.then(() => {
-	console.log('Connection has been established successfully.');
-})
-.catch(err => {
-	console.error('Unable to connect to the database:', err);
-});
+export const sequelize = new Sequelize(dbName, dbUsername, dbPassword, sequilizeConfig);
+export default sequelize;
 
 require('./sequilizeModels')(sequelize);
 
 /*Object.values(models).forEach((model) => {
 	model.sync({force: true})
 });*/
-
-console.log("sequelize.models", sequelize.models);
-sequelize.models.decks.findAll().then((decks)=>{
-	console.log("decks", decks);
-})
