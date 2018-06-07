@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-let models = fs.readdirSync(`./src/sequilizeModels`).reduce((accumulator, file) => {
+let models = fs.readdirSync(`${__dirname}`).reduce((accumulator, file) => {
 	let regex = /(?:(.*)\.([^.]+))?$/;
 	let regexResults = regex.exec(file);
 	

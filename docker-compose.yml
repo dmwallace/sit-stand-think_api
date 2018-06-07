@@ -1,11 +1,17 @@
 version: '3'
 services:
-  web:
+  node:
     build: .
+    user: node
+    working_dir: /home/node/app
     container_name: sst-api
-    command: npm run prod
+    environment:
+      - NODE_ENV=production
     volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
+      - ./assets:/home/node/app/assets
+      - ./db:/home/node/app/db
+    expose:
+      - "4000"
     ports:
       - "4000:4000"
+    command: node build/index.js

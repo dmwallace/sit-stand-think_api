@@ -26,11 +26,11 @@
     "sequelize": "^4.37.7",
     "sequelize-auto": "^0.4.29",
     "shortid": "^2.2.8",
-    "sqlite3": "^4.0.0",
-    "version": "^0.1.2",
-    "webpack": "^4.11.1"
+    "sqlite3": "^4.0.0"
   },
   "devDependencies": {
+    "version": "^0.1.2",
+    "webpack": "^4.11.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
@@ -51,9 +51,9 @@
     "docker_stop": "docker stop sst-api",
     "docker_shell": "docker exec -it sst-api sh",
     "docker_logs": "docker logs sst-api",
-    "babel-compile": "npx babel src --out-dir dist --source-maps",
-    "prod": "node dist/index.js",
-    "start": " npm run babel-compile && npm run prod",
+    "build": "npx babel src --out-dir build --source-maps",
+    "prod": "node build/index.js",
+    "start": "npm run compile && docker-compose up",
     "webpack": "node -v && rm -rf ./build && webpack --config config/webpack.config.server.js",
     "dev": "npm run sequilizeAuto && npm run dev-without-import",
     "dev-without-import": "./node_modules/.bin/babel-watch src/index.js",
