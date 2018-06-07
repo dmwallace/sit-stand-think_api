@@ -3,7 +3,7 @@ services:
   web:
     build: .
     container_name: sst-api
-    command: npm start
+    command: npm run prod
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules

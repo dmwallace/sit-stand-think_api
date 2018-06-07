@@ -31,6 +31,7 @@
     "webpack": "^4.11.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
@@ -50,7 +51,9 @@
     "docker_stop": "docker stop sst-api",
     "docker_shell": "docker exec -it sst-api sh",
     "docker_logs": "docker logs sst-api",
-    "start": "npm run dev-without-import",
+    "babel-compile": "npx babel src --out-dir dist --source-maps",
+    "prod": "node dist/index.js",
+    "start": " npm run babel-compile && npm run prod",
     "webpack": "node -v && rm -rf ./build && webpack --config config/webpack.config.server.js",
     "dev": "npm run sequilizeAuto && npm run dev-without-import",
     "dev-without-import": "./node_modules/.bin/babel-watch src/index.js",
