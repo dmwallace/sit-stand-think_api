@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/graphqlData/mocks.js"],"names":["mocks","String"],"mappings":";;;;;AAAA,MAAMA,QAAQ;AACbC,SAAQ,MAAM;AADD,CAAd;;kBAIeD,K","file":"mocks.js","sourcesContent":["const mocks = {\n\tString: () => 'It works!'\n};\n\nexport default mocks;"]}

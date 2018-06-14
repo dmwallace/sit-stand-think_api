@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":[],"mappings":";;AACA","file":"index.js","sourcesContent":["//import graphqlCrudGenerator from './graphqlCrudGeneratorServer';\nimport graphqlServer from './graphqlServer';"]}

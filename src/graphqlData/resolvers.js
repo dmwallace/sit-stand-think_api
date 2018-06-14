@@ -13,7 +13,7 @@ mkdirp.sync(uploadDir)
 const storeFS = ({stream, filename}) => {
 	const id = shortid.generate()
 	const path = `${uploadDir}/${id}-${filename}`
-	const url = `http://localhost:4000/assets/images/cards/${id}-${filename}`
+	const url = `/assets/images/cards/${id}-${filename}`
 	return new Promise((resolve, reject) =>
 		stream
 		.on('error', error => {
