@@ -10,6 +10,7 @@ services:
     volumes:
       - ./assets:/home/node/app/assets
       - ./db:/home/node/app/db
+      - ./build:/home/node/app/build
     expose:
       - "4000"
     ports:
