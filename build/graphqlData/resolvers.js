@@ -37,6 +37,7 @@ const storeFS = ({ stream, filename }) => {
 	const id = _shortid2.default.generate();
 	const path = `${uploadDir}/${id}-${filename}`;
 	const url = `/assets/images/cards/${id}-${filename}`;
+	console.log("url", url);
 	return new Promise((resolve, reject) => stream.on('error', error => {
 		if (stream.truncated)
 			// Delete the truncated file
@@ -113,21 +114,46 @@ const resolvers = {
 
 	Mutation: {
 		upsertClass: (_, args) => _db2.default.models.class.upsert(args),
-		upsertClasses: (_, { classes }) => classes.map(c => _db2.default.models.class.upsert(c).then(result => {
-			//console.log("result", result);
-		})),
+		upsertClasses: (_, { classes }) => {
+			return classes.map(cl => {
+				return _db2.default.models.class.upsert(cl).then(() => {
+					let upsertedCl;
 
+					if (!cl.id) {
+						upsertedCl = _db2.default.models.class.findOne({
+							'order': [['id', 'DESC']]
+						});
+					} else {
+						upsertedCl = _db2.default.models.class.findById(cl.id);
+					}
+
+					return upsertedCl;
+				});
+			});
+		},
 		deleteClasses: (_, { classes }) => {
 			//console.log("classes", classes);
 			return classes.map(c => _db2.default.models.class.destroy({
 				where: { id: c.id }
 			}));
 		},
-		upsertDeck: (_, args) => _db2.default.models.deck.upsert(args),
-		upsertDecks: (_, { decks }) => decks.map(c => _db2.default.models.deck.upsert(c).then(result => {
-			//console.log("result", result);
-		})),
+		upsertDecks: (_, { decks }) => {
+			return decks.map(deck => {
+				return _db2.default.models.deck.upsert(deck).then(() => {
+					let upsertedDeck;
 
+					if (!deck.id) {
+						upsertedDeck = _db2.default.models.deck.findOne({
+							'order': [['id', 'DESC']]
+						});
+					} else {
+						upsertedDeck = _db2.default.models.deck.findById(deck.id);
+					}
+
+					return upsertedDeck;
+				});
+			});
+		},
 		deleteDecks: (_, { decks }) => {
 			//console.log("decks", decks);
 			return decks.map(c => _db2.default.models.deck.destroy({
@@ -149,9 +175,9 @@ const resolvers = {
 						});
 					}
 
-					//console.log("pool", pool);
+					console.log("pool", pool);
 					//console.log("pool.id", pool.id);
-
+					console.log("cards", cards);
 
 					if (cards) {
 						// delete existing pool_cards
@@ -189,14 +215,17 @@ const resolvers = {
 			}));
 		},
 		upsertCards: async (obj, { cards }) => {
+			console.log("cards", cards);
 			const { resolve, reject } = await _promisesAll2.default.all(cards.map(async card => {
 				let image = await card.image;
-
+				console.log("image", image);
 				if (image && typeof image !== 'string') {
 					try {
 						var { url, filename } = await processUpload(image);
 
+						console.log("url", url);
 						card = Object.assign({}, card, { image: url });
+						console.log("card", card);
 					} catch (err) {
 						if (err) console.error(err);
 					}
@@ -205,6 +234,8 @@ const resolvers = {
 				if (!card.id && !card.name && filename) {
 					card.name = filename.split('.')[0];
 				}
+
+				console.log("card.image", card.image);
 				await _db2.default.models.card.upsert(card);
 
 				let result;

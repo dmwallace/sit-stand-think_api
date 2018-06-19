@@ -14,6 +14,7 @@ const storeFS = ({stream, filename}) => {
 	const id = shortid.generate()
 	const path = `${uploadDir}/${id}-${filename}`
 	const url = `/assets/images/cards/${id}-${filename}`
+	console.log("url", url);
 	return new Promise((resolve, reject) =>
 		stream
 		.on('error', error => {
@@ -97,23 +98,46 @@ const resolvers = {
 	
 	Mutation: {
 		upsertClass: (_, args) => db.models.class.upsert(args),
-		upsertClasses: (_, {classes}) =>
-			classes.map(c => db.models.class.upsert(c).then((result) => {
-				//console.log("result", result);
-			}))
-		,
+		upsertClasses: (_, {classes}) => {
+			return classes.map((cl) => {
+				return db.models.class.upsert(cl).then(() => {
+					let upsertedCl;
+					
+					if (!cl.id) {
+						upsertedCl = db.models.class.findOne({
+							'order': [['id', 'DESC']]
+						});
+					} else {
+						upsertedCl = db.models.class.findById(cl.id);
+					}
+					
+					return upsertedCl;
+				})
+			})
+		},
 		deleteClasses: (_, {classes}) => {
 			//console.log("classes", classes);
 			return classes.map(c => db.models.class.destroy({
 				where: {id: c.id}
 			}))
 		},
-		upsertDeck: (_, args) => db.models.deck.upsert(args),
-		upsertDecks: (_, {decks}) =>
-			decks.map(c => db.models.deck.upsert(c).then((result) => {
-				//console.log("result", result);
-			}))
-		,
+		upsertDecks: (_, {decks}) => {
+			return decks.map((deck) => {
+				return db.models.deck.upsert(deck).then(()=>{
+					let upsertedDeck;
+					
+					if(!deck.id) {
+						upsertedDeck = db.models.deck.findOne({
+							'order': [['id', 'DESC']]
+						});
+					} else {
+						upsertedDeck = db.models.deck.findById(deck.id);
+					}
+					
+					return upsertedDeck;
+				})
+			})
+		},
 		deleteDecks: (_, {decks}) => {
 			//console.log("decks", decks);
 			return decks.map(c => db.models.deck.destroy({
@@ -135,9 +159,9 @@ const resolvers = {
 						});
 					}
 					
-					//console.log("pool", pool);
+					console.log("pool", pool);
 					//console.log("pool.id", pool.id);
-					
+					console.log("cards", cards);
 					
 					if (cards) {
 						// delete existing pool_cards
@@ -179,15 +203,18 @@ const resolvers = {
 			}))
 		},
 		upsertCards: async (obj, {cards}) => {
+			console.log("cards", cards);
 			const {resolve, reject} = await promisesAll.all(
 				cards.map(async (card) => {
 					let image = await card.image;
-					
+					console.log("image", image);
 					if (image && typeof image !== 'string') {
 						try {
 							var {url, filename} = await processUpload(image);
 							
+							console.log("url", url);
 							card = {...card, image: url};
+							console.log("card", card);
 						} catch (err) {
 							if (err) console.error(err);
 						}
@@ -196,6 +223,8 @@ const resolvers = {
 					if (!card.id && !card.name && filename) {
 						card.name = filename.split('.')[0];
 					}
+					
+					console.log("card.image", card.image);
 					await db.models.card.upsert(card);
 					
 					let result;

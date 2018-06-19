@@ -45,6 +45,7 @@ type Card {
 	${timestamps}
 	id: ID
 	name: String
+	description: String
 	image: String
 	order: Int
 	deck_id: ID
@@ -76,6 +77,7 @@ input DeckInput {
 input CardInput {
 	id: ID
 	name: String
+	description: String
 	image: Upload
 	order: Int
 	deck_id: ID
@@ -114,13 +116,6 @@ type Mutation {
 	deleteClasses (
 		classes: [ClassInput]
 	): [Boolean]
-	
-	upsertDeck (
-		id: ID
-		name: String
-		description: String
-		order: Int
-	): Deck
 	
 	upsertDecks (
 		decks: [DeckInput]
