@@ -4,6 +4,8 @@ import {graphqlExpress, graphiqlExpress} from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import {apolloUploadExpress} from 'apollo-upload-server'
 
+var resize = require('express-resize');
+
 const playground = require('graphql-playground-middleware-express').default;
 
 import schema from './graphqlData/schema';
@@ -24,8 +26,10 @@ const helperMiddleware = [
 	apolloUploadExpress(/* Options */),
 ];
 
+const imageResizeMiddleware = ()=>{}
 const graphQLServer = express();
 graphQLServer.use(cors());
+graphQLServer.use('/assets', resize);
 graphQLServer.use('/assets', express.static('./assets'));
 graphQLServer.use('/graphql', ...helperMiddleware, graphqlExpress({schema}));
 graphQLServer.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));

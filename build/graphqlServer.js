@@ -22,6 +22,8 @@ var _schema2 = _interopRequireDefault(_schema);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var resize = require('express-resize');
+
 const playground = require('graphql-playground-middleware-express').default;
 
 const GRAPHQL_PORT = 4000;
@@ -35,8 +37,10 @@ const helperMiddleware = [_bodyParser2.default.json(), _bodyParser2.default.text
 	next();
 }, (0, _apolloUploadServer.apolloUploadExpress)()];
 
+const imageResizeMiddleware = () => {};
 const graphQLServer = (0, _express2.default)();
 graphQLServer.use((0, _cors2.default)());
+graphQLServer.use('/assets', resize);
 graphQLServer.use('/assets', _express2.default.static('./assets'));
 graphQLServer.use('/graphql', ...helperMiddleware, (0, _apolloServerExpress.graphqlExpress)({ schema: _schema2.default }));
 graphQLServer.use('/graphiql', (0, _apolloServerExpress.graphiqlExpress)({ endpointURL: '/graphql' }));

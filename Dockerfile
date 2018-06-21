@@ -10,18 +10,18 @@ COPY package.json .
 FROM base AS dependencies
 RUN apk update
 RUN apk add --no-cache make gcc g++ python git tini
-COPY . .
+#COPY . .
 RUN npm set progress=false && npm config set depth 0
 RUN npm install --only=production
 RUN cp -R node_modules prod_node_modules
 RUN npm install
-RUN npm run build
+#RUN npm run build
 
 FROM base AS release
 # copy production node_modules
 COPY --from=dependencies /home/node/app/prod_node_modules ./node_modules
-COPY --from=dependencies /home/node/app/build ./build
+#COPY --from=dependencies /home/node/app/build ./build
 
 # expose port and define CMD
 EXPOSE 4000
-CMD node build/index.js
+#CMD node build/index.js
