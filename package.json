@@ -1,6 +1,6 @@
 {
   "name": "sit-stand-think_api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "API for Sit Stand Think app",
   "main": "src/index.js",
   "author": "davewallace@gmail.com",
