@@ -9,7 +9,8 @@ COPY package.json .
 
 FROM base AS dependencies
 RUN apk update
-RUN apk add --no-cache make gcc g++ python git tini
+RUN apk add vips-dev fftw-dev --update-cache --repository https://dl-3.alpinelinux.org/alpine/edge/testing/
+RUN apk add --no-cache vips make gcc g++ python git tini
 #COPY . .
 RUN npm set progress=false && npm config set depth 0
 RUN npm install --only=production
