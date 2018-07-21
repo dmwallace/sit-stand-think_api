@@ -43,7 +43,7 @@ const resolvers = {
 		deck: (_, {id}) => db.models.deck.findById(id),
 		decks: (_, args) => db.models.deck.findAll(),
 		cards: (_, args) => db.models.card.findAll({
-			where: deck_id ? {deck_id: args.deck_id} : null,
+			where: args.deck_id ? {deck_id: args.deck_id} : null,
 			order: [['order']]
 		}),
 		pools: (_, args) => db.models.pool.findAll({
