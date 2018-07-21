@@ -59,7 +59,7 @@ const resolvers = {
 		deck: (_, { id }) => _db2.default.models.deck.findById(id),
 		decks: (_, args) => _db2.default.models.deck.findAll(),
 		cards: (_, args) => _db2.default.models.card.findAll({
-			where: { deck_id: args.deck_id },
+			where: deck_id ? { deck_id: args.deck_id } : null,
 			order: [['order']]
 		}),
 		pools: (_, args) => _db2.default.models.pool.findAll({
