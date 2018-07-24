@@ -63,7 +63,7 @@ const resolvers = {
 			order: [['order']]
 		}),
 		pools: (_, args) => _db2.default.models.pool.findAll({
-			where: { deck_id: args.deck_id }
+			where: args.deck_id && { deck_id: args.deck_id }
 		}),
 		games: async (_, args) => {
 			//console.log("args", args);
