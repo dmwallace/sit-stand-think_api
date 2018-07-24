@@ -52,7 +52,7 @@ const resolvers = {
 		games: async (_, args) => {
 			//console.log("args", args);
 			let result = await db.models.game.findAll({
-				where: {deck_id: args.deck_id}
+				where: args.deck_id && {deck_id: args.deck_id}
 			})
 			
 			//console.log("result", result);
